@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<p class="text-center">Hi {{ user.username }}! Date Joined: {{ user.date_joined }}
+<p class="text-center"><a href="{% url 'logout' %}">Log Out</a></p>
+<div class="d-flex justify-content-center">
+    <p><a class="btn btn-primary btn-lg" href="{% url 'property_list' %}" role="button">View all house listings</a></p>
+</div>
+<!-- new -->
+{% else %}
+<p>You are not logged in, Log in to view content</p>
+<a href="{% url 'login' %}">Log In</a> |
+<a href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
+{% endblock content %}
