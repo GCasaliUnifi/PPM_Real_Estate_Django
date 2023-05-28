@@ -27,6 +27,7 @@ class Listing(models.Model):
     # TODO add location field
     listing_location = models.CharField(max_length=200)
     is_published = models.BooleanField()
+    is_featured = models.BooleanField(default=False)
     list_date = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
