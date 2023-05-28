@@ -62,7 +62,7 @@
           {% endif %}
         </ul>
         <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success me-4" type="submit">Search</button>
         </form>
         {% if user.is_authenticated %}
@@ -87,7 +87,7 @@
       </div>
     </div>
   </nav>
-  <main>
+  <main class="bg-secondary">
     <div class="container pt-5 mt-4">
       {% block content %}
       {% endblock content %}

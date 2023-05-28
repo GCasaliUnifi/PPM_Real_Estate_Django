@@ -26,14 +26,15 @@
 
 
 {% for listing in listing_list %}
-<div class="row border-top border-bottom py-3">
+<div class="row border-top border-bottom border-success py-3 bg-dark mb-2">
     <div class="col-md-3">
-      <img src="https://fakeimg.pl/200x200?font=bebas" class="img-fluid" alt="Listing Image">
+      <img src="https://placehold.co/600x400" class="img-fluid" alt="Listing Image">
     </div>
     <div class="col-md-9">
-        <h2 class="font-weight-bold"><a href="{{ listing.get_absolute_url }}">{{ listing.title }}</a></h2>
-        <h3 class="text-secondary">Price: {{ listing.price }}€, Location: {{ listing.listing_location }}</h3>
-        <p>{{ listing.description }}</p>
+        <h2 class="font-weight-bold"><a href="{{ listing.get_absolute_url }}" class="text-decoration-none">{{ listing.title }}</a></h2>
+        <h3 class="text-secondary">Price: {{ listing.price }}€</h3>
+        <h3 class="text-secondary">Location: {{ listing.listing_location }}</h3>
+        <p class="text-light">{{ listing.description }}</p>
     </div>
 </div>
 {% endfor %}
