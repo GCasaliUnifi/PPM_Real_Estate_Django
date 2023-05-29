@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_filters %}
 
 {% block title %}Home{% endblock title %}
 
@@ -22,8 +23,12 @@
         <h1 class="fw-light">Real Estate Selling Platform</h1>
         <p class="lead text-body-secondary">This website allows you to easily create and manage listings for a property you want to sell.<br>Looking to buy instead? We got you covered, we provide with all the tools to search what suits you the most.</p>
         <p>
-          <a href="{% url 'property_list' %}" class="btn btn-primary my-2">View all listings</a>
-          <a href="{% url 'listing_create' %}" class="btn btn-secondary my-2">Sell your property</a>
+            <a href="{% url 'property_list' %}" class="btn btn-success my-2">View all listings</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'listing_create' %}" class="btn btn-secondary my-2">Sell your property</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-secondary my-2">Sell your property</a>
+            {% endif %}
         </p>
       </div>
     </div>
@@ -31,22 +36,23 @@
 
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
-
+        <h3 class="border-bottom border-dark border-4 pb-2">Featured</h3>
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% for listing in featured_listings %}
         <div class="col">
-          <div class="card shadow-sm">
+          <div class="card h-100 d-flex shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <h5 class="card-title">{{ listing.title }}</h5>
-              <p class="card-text">{{ listing.description }}</p>
-              <p class="card-text text-secondary">{{ listing.price }}€</p>
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ listing.title }}</h5>
+                <p class="card-text text-secondary">{{ listing.price }}€</p>
+                <p class="card-text text-fill">{{ listing.description|cut_after_chars:150 }}</p>
+            </div>
+            <div class="card-footer">
               <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="{% url 'home' %}" class="btn btn-sm btn-outline-secondary">View more details</a>
-                </div>
-<!--                TODO calculate how long ago the listing was created-->
-                <small class="text-body-secondary">Listed on:{{ listing.list_date }}</small>
+                  <div class="btn-group">
+                      <a href="{% url 'property_detail' listing.pk %}" class="btn btn-sm btn-outline-secondary">View more details</a>
+                  </div>
+                  <small class="text-body-secondary">{{ listing.list_date|timesince }} ago</small>
               </div>
             </div>
           </div>
