@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+{% load custom_filters %}
 
+{% block title %}Listings{% endblock title %}
 {% block content %}
 
 <div class="sorting-section">
@@ -38,7 +40,7 @@
         <h2 class="font-weight-bold"><a href="{{ listing.get_absolute_url }}" class="text-decoration-none">{{ listing.title }}</a></h2>
         <h3 class="text-secondary">Price: {{ listing.price }}€</h3>
         <h3 class="text-secondary">Location: {{ listing.listing_location }}</h3>
-        <p class="text-light">{{ listing.description }}</p>
+        <p class="text-light">{{ listing.description|cut_after_chars:400 }}</p>
     </div>
 </div>
 {% endfor %}

@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+import uuid, os
 
 # Create your models here.
 
@@ -16,6 +17,13 @@ class Category(models.Model):
         return self.name
 
 
+def listing_image_directory_path(instance, filename):
+    # Generate a unique filename for the image (uuid)
+    listing_uuid = uuid.uuid4().hex
+    # Upload to a directory named after the listing uuid
+    return os.path.join('listings', listing_uuid, filename)
+
+
 class Listing(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -25,7 +33,7 @@ class Listing(models.Model):
     square_feet = models.PositiveIntegerField()
     # TODO add location field
     listing_location = models.CharField(max_length=200)
-    image = models.ImageField(upload_to="listings/", blank=True, null=True)
+    image = models.ImageField(upload_to="listing_image_directory_path", blank=True, null=True)
     is_published = models.BooleanField()
     is_featured = models.BooleanField(default=False)
     list_date = models.DateTimeField(auto_now_add=True)
