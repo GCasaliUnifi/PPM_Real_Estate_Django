@@ -28,7 +28,11 @@
 {% for listing in listing_list %}
 <div class="row border-top border-bottom border-success py-3 bg-dark mb-2">
     <div class="col-md-3">
-      <img src="https://placehold.co/600x400" class="img-fluid" alt="Listing Image">
+        {% if listing.image %}
+        <img src="{{ listing.image.url }}" class="img-fluid" alt="Listing Image">
+        {% else %}
+        <img src="https://placehold.co/600x400" class="img-fluid" alt="Listing Image">
+        {% endif %}
     </div>
     <div class="col-md-9">
         <h2 class="font-weight-bold"><a href="{{ listing.get_absolute_url }}" class="text-decoration-none">{{ listing.title }}</a></h2>

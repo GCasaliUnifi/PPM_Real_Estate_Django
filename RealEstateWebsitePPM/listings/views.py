@@ -41,6 +41,7 @@ class PropertyCreateView(CreateView):
         "square_feet",
         "category",
         "price",
+        "image",
     )
 
     def form_valid(self, form):

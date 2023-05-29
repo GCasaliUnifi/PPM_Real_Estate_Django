@@ -23,9 +23,9 @@ class Listing(models.Model):
     bedrooms = models.PositiveIntegerField()
     bathrooms = models.PositiveIntegerField()
     square_feet = models.PositiveIntegerField()
-    # TODO photo
     # TODO add location field
     listing_location = models.CharField(max_length=200)
+    image = models.ImageField(upload_to="listings/", blank=True, null=True)
     is_published = models.BooleanField()
     is_featured = models.BooleanField(default=False)
     list_date = models.DateTimeField(auto_now_add=True)
