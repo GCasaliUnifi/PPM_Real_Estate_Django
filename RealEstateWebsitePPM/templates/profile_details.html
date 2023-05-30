@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container text-center bg-success bg-opacity-75 border border-2 border-dark">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <h1 class="display-3 mb-3"><strong>User Details</strong></h1>
+<!--        TODO    Add image here-->
+            <img src="https://placehold.co/200x200" class="img-fluid rounded-circle mb-5 border border-3 border-dark" width="200" height="200">
+            <div class="h3 d-flex justify-content-between mt-3 pt-3 pb-2 border-top border-3 border-dark">
+                <strong>Username:</strong>
+                <span>{{ customuser.username }}</span>
+            </div>
+            <div class="h3 d-flex justify-content-between pt-3 pb-2 border-top border-3 border-dark">
+                <strong>e-Mail:</strong>
+                <span>{{ customuser.email }}</span>
+            </div>
+            <div class="h4 d-flex justify-content-between pt-3 pb-2 border-top border-3 border-dark">
+                <strong>Date joined:</strong>
+                <span>{{ customuser.date_joined }}</span>
+            </div>
+
+            {% if user.is_authenticated and user == customuser %}
+            <p class="h5 pt-2 pb-2 border-top border-3 border-dark"><a href="#">Edit Your Profile</a></p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+<!--TODO add a slideshow of some of this user listings if any are present-->
+{% endblock content %}

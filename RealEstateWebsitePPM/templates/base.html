@@ -41,6 +41,7 @@
             {{ user.username }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="{% url 'profile_details' user.pk %}">Your Profile</a></li>
             <li><a class="dropdown-item" href="#">See your Listings</a></li>
             <li><a class="dropdown-item" href="{% url 'password_change' %}">Change password</a></li>
             <li><a class="dropdown-item" href="{% url 'logout' %}">Log Out</a></li>
@@ -57,7 +58,7 @@
     </div>
   </nav>
   <main class="bg-secondary">
-    <div class="container pt-5 mt-4">
+    <div class="container-fluid pt-5 mt-4">
       {% block content %}
       {% endblock content %}
     </div>
