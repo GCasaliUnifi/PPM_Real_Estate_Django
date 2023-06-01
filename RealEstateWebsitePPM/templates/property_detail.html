@@ -5,8 +5,13 @@
 {% block content %}
 <div>
     <h2>{{ listing.title }}</h2>
+    <p>Posted: {{ listing.list_date }}</p>
     <p>{{ listing.description }}</p>
     <p>Price: {{ listing.price }}</p>
+    <p>Location: {{ listing.listing_location }}</p>
+    <p>Seller: {{ listing.owner }} </p>
+    <h4>Want to buy? <a href="{% url 'profile_details' listing.owner.pk %}" class="text-dark"> Contact seller</a></h4>
+
     <p>Back to <a href="{% url 'property_list' %}">All Listings</a>.</p>
     {% if user.is_authenticated and user == listing.owner %}
     <button type="button" id="deleteButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal"

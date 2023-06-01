@@ -21,7 +21,17 @@
             </div>
 
             {% if user.is_authenticated and user == customuser %}
-            <p class="h5 pt-2 pb-2 border-top border-3 border-dark"><a href="#">Edit Your Profile</a></p>
+            <p class="h5 pt-2 pb-2 border-top border-3 border-dark">
+                <a href="#" class="text-dark">
+                    Edit Your Profile
+                </a>
+            </p>
+            {% elif user.is_authenticated %}
+            <p class="h5 pt-2 pb-2 border-top border-3 border-dark">
+                <a href="#" class="text-dark">
+                    Send a message to {{ customuser.username }}
+                </a>
+            </p>
             {% endif %}
         </div>
     </div>
