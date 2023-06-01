@@ -29,7 +29,6 @@ def listing_image_directory_path(instance, filename):
     return os.path.join('listings', folder_name, filename)
 
 
-
 class Listing(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()

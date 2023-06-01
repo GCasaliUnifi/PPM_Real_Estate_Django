@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from django.utils import timezone
 from django.urls import reverse_lazy
 
@@ -49,3 +49,9 @@ class PropertyCreateView(CreateView):
         form.instance.list_date = timezone.now()
         form.instance.is_published = True
         return super().form_valid(form)
+
+
+class PropertyDeleteView(DeleteView):
+    model = Listing
+    # TODO change this to redirect to the user's listings
+    success_url = reverse_lazy("home")
