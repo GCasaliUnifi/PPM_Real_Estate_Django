@@ -1,9 +1,11 @@
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from django.shortcuts import redirect
+from django.contrib import messages
 from django.views.generic import CreateView, DetailView, UpdateView
 
 # Create your views here.
 
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
 
 
@@ -21,7 +23,29 @@ class ProfileView(DetailView):
 
 class EditProfileView(UpdateView):
     model = CustomUser
-    # fields = ['first_name', 'last_name', 'phone_number', 'date_of_birth', 'address']
-    fields = ['username', 'first_name', 'last_name', 'email', 'phone_number', 'date_of_birth', 'address']
+    form_class = CustomUserChangeForm
     template_name = "registration/profile_edit.html"
-    success_url = reverse_lazy("profile_details")
+
+    def get_success_url(self):
+        return reverse_lazy("profile_details", kwargs={"pk": self.object.pk})
+
+    def form_valid(self, form):
+        # Add debugging statements
+        print("Form is valid. Saving user profile.")
+
+        # Save the form and user profile
+        response = super().form_valid(form)
+
+        # Add debugging statements
+        print("User profile saved successfully.")
+
+        return response
+
+    def form_invalid(self, form):
+        #  debugging statements
+        print("Form is invalid.")
+
+        # Display form validation errors as messages
+        messages.error(self.request, "Please correct the errors in the form.")
+
+        return super().form_invalid(form)

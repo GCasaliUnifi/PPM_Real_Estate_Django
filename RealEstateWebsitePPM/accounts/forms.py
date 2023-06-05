@@ -20,6 +20,8 @@ class CustomUserChangeForm(UserChangeForm):
         fields = (
             "username",
             "email",
+            "first_name",
+            "last_name",
             "phone_number",
             "address",
             "date_of_birth",

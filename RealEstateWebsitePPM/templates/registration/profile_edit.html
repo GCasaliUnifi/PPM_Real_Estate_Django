@@ -1,14 +1,65 @@
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-5">
-            <h1 class="display-3 mb-3"><strong>Edit Profile</strong></h1>
-            <img src="https://placehold.co/200x200" class="img-fluid rounded-circle mb-5 border border-3 border-dark"
-                 width="200" height="200">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </form>
-        </div>
+{% extends 'base.html' %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+
+<div class="container mt-3 mb-5">
+    <div class="row ms-auto me-auto">
+        <h1 class="display-3 mb-3 pb-1 border-bottom border-2 border-dark text-center"><strong>Edit Your
+            Profile</strong></h1>
     </div>
+    <form method="post" action="{% url 'profile_edit' user.pk %}">
+        {% csrf_token %}
+        <div class="row justify-content-center bg-success bg-success bg-opacity-75 border border-2 border-dark pt-2 mb-3">
+            <div class="col-md-5 text-center pt-4 me-5">
+                <img src="https://placehold.co/200x200"
+                     class="img-fluid rounded-circle mb-1 border border-3 border-dark"
+                     width="200" height="200">
+            </div>
+            <div class="col-md-5 mt-4">
+                <div class="mb-3 pb-1 border-dark">
+                    <label for="newUsername" class="form-label"><strong>Username</strong> *</label>
+                    <input type="text" class="form-control" id="newUsername" name="username"
+                           placeholder="Username" value="{{ user.username }}" aria-label="NewUsername" aria-describedby="new-username">
+                </div>
+                <div class="mb-3 border-top border-dark">
+                    <label for="newEmail" class="form-label"><strong>Email</strong> *</label>
+                    <input type="text" class="form-control" id="newEmail" name="email"
+                           placeholder="email" value="{{ user.email }}" aria-label="NewEmail" aria-describedby="new-email">
+                </div>
+                <div class="mb-3 pb-1 border-top border-dark">
+                    <label for="firstName" class="form-label"><strong>First Name</strong></label>
+                    <input type="text" class="form-control" id="firstName" name="first_name"
+                           placeholder="First Name" value="{{ user.first_name }}" aria-label="FirstName" aria-describedby="first-name">
+                </div>
+                <div class="mb-3 pb-1 border-top border-dark">
+                    <label for="lastName" class="form-label"><strong>Last Name</strong></label>
+                    <input type="text" class="form-control" id="lastName" name="last_name"
+                           placeholder="Last Name" value="{{ user.last_name }}" aria-label="LastName" aria-describedby="last-name">
+                </div>
+                <div class="mb-3 pb-1 border-top border-dark">
+                    <label for="phoneNumber" class="form-label"><strong>Phone Number</strong></label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phone_number"
+                           placeholder="Phone Number" value="{{ user.phone_number }}" aria-label="PhoneNumber"
+                           aria-describedby="phone-number">
+                </div>
+                <div class="mb-3 pb-1 border-top border-dark">
+                    <label for="address" class="form-label"><strong>Address</strong></label>
+                    <input type="text" class="form-control" id="address" name="address"
+                           placeholder="Address" value="{{ user.address }}" aria-label="Address" aria-describedby="address">
+                </div>
+                <div class="mb-3 pb-1 border-top border-dark">
+                    <label for="dateOfBirth" class="form-label"><strong>Date of Birth</strong></label>
+                    <input type="date" class="form-control" id="dateOfBirth" name="date_of_birth"
+                           placeholder="Date of Birth" value="{{ user.date_of_birth }}" aria-label="DateOfBirth"
+                           aria-describedby="date-of-birth">
+                </div>
+            </div>
+            <div class="row justify-content-center mb-2">
+                <div class="col-md-5 text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
+{% endblock %}
