@@ -50,7 +50,7 @@
                 <div class="mb-3 pb-1 border-top border-dark">
                     <label for="dateOfBirth" class="form-label"><strong>Date of Birth</strong></label>
                     <input type="date" class="form-control" id="dateOfBirth" name="date_of_birth"
-                           placeholder="Date of Birth" value="{{ user.date_of_birth }}" aria-label="DateOfBirth"
+                           placeholder="Date of Birth" value="{{ user.date_of_birth|date:'Y-m-d' }}" aria-label="DateOfBirth"
                            aria-describedby="date-of-birth">
                 </div>
             </div>
