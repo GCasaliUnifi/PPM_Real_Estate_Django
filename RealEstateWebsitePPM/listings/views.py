@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, TemplateView
 from django.utils import timezone
 from django.urls import reverse_lazy
 
@@ -55,3 +55,7 @@ class PropertyDeleteView(DeleteView):
     model = Listing
     # TODO change this to redirect to the user's listings
     success_url = reverse_lazy("home")
+
+
+class ContactSellerView(TemplateView):
+    template_name = "contact_seller.html"

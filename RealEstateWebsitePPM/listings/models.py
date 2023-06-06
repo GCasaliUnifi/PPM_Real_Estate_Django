@@ -35,7 +35,7 @@ class Listing(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     bedrooms = models.PositiveIntegerField()
     bathrooms = models.PositiveIntegerField()
-    square_feet = models.PositiveIntegerField()
+    square_metres = models.PositiveIntegerField()
     # TODO add location field
     listing_location = models.CharField(max_length=200)
     image = models.ImageField(upload_to=listing_image_directory_path, blank=True, null=True)

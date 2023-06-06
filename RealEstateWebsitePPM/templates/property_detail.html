@@ -4,15 +4,45 @@
 
 {% block content %}
 <div>
-    <h2>{{ listing.title }}</h2>
-    <p>Posted: {{ listing.list_date }}</p>
-    <p>{{ listing.description }}</p>
-    <p>Price: {{ listing.price }}</p>
-    <p>Location: {{ listing.listing_location }}</p>
-    <p>Seller: {{ listing.owner }} </p>
-    <h4>Want to buy? <a href="{% url 'profile_details' listing.owner.pk %}" class="text-dark"> Contact seller</a></h4>
+    <div class="container mt-2 pt-2 pb-2 mb-2 bg-success bg-opacity-75 border border-2 border-dark rounded shadow">
+        <div class="text-center border-bottom border-2 border-dark mb-2">
+            <h2><strong>{{ listing.title }}</strong></h2>
+        </div>
+        <div class="row border-bottom border-dark border-2">
+            <div class="col-md-6 pb-2" style="border-right: 2px solid black;">
+                <img src="{{ listing.image.url }}" class="img-fluid" width="600" height="400">
+            </div>
+            <div class="col-md-6 d-flex flex-column">
+                <h3>Some Details:</h3>
+                <p>Posted: {{ listing.list_date }} &nbsp; &nbsp; ({{ listing.list_date|timesince }} ago)</p>
+                {% if listing.category != 'Other' %}
+                <h5><strong>Type of property:</strong>&nbsp; &nbsp; {{ listing.category }}</h5>
+                {% else %}
+                <h5><strong>Type of property:</strong>&nbsp; &nbsp; Unspecified by the user</h5>
+                {% endif %}
+                <h5><strong>Square metres:</strong>&nbsp; &nbsp; {{ listing.square_metres }}</h5>
+                <h5><strong>Price for this property:</strong> &nbsp; &nbsp; {{ listing.price }} €</h5>
+                <h5><strong>Number of bedrooms:</strong>&nbsp; &nbsp; {{ listing.bedrooms }}</h5>
+                <h5><strong>Number of bathrooms:</strong>&nbsp; &nbsp; {{ listing.bathrooms }}</h5>
+                <h5><strong>Location:</strong>&nbsp; &nbsp; {{ listing.listing_location }}</h5>
+<!--                TODO open street view map-->
 
-    <p>Back to <a href="{% url 'property_list' %}">All Listings</a>.</p>
+                <h5><strong>Owner:</strong>&nbsp;&nbsp;<a class="text-dark" href="{% url 'profile_details' listing.owner.pk %}">{{ listing.owner }}</a></h5>
+                <div class="mt-auto">
+                    <p>Back to <a class="text-dark" href="{% url 'property_list' %}">All Listings</a>.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3><strong>Property description:</strong></h3>
+                <p>{{ listing.description }}</p>
+            </div>
+            <h4>Want to buy? <a href="{% url 'contact_seller' listing.owner.pk %}" class="text-dark">Contact seller</a></h4>
+            <p>Back to <a href="{% url 'property_list' %}">All Listings</a>.</p>
+        </div>
+    </div>
+
     {% if user.is_authenticated and user == listing.owner %}
     <button type="button" id="deleteButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal"
         data-url="{% url 'property_delete' listing.pk %}">Delete Listing</button>

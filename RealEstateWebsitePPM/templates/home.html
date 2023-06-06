@@ -38,7 +38,10 @@
                 {% endif %}
             </svg>
             <div class="card-body d-flex flex-column">
-                <h5 class="card-title">{{ listing.title }}</h5>
+                <h5 class="card-title">
+                    {{ listing.title }}
+                    <span class="text-muted small">{{ listing.category }}</span>
+                </h5>
                 <p class="card-text text-secondary">{{ listing.price }}€</p>
                 <p class="card-text text-fill">{{ listing.description|cut_after_chars:150 }}</p>
             </div>
