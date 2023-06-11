@@ -4,16 +4,16 @@
 
 {% block content %}
 <div>
-    <div class="container mt-2 pt-2 pb-2 mb-2 bg-success bg-opacity-75 border border-2 border-dark rounded shadow">
+    <div class="container mt-2 pt-2 mb-2 bg-success bg-opacity-75 border border-2 border-dark rounded shadow">
         <div class="text-center border-bottom border-2 border-dark mb-2">
             <h2><strong>{{ listing.title }}</strong></h2>
         </div>
-        <div class="row border-bottom border-dark border-2">
+        <div class="row border-bottom pb-1 border-dark border-2">
             <div class="col-md-6 pb-2" style="border-right: 2px solid black;">
                 <img src="{{ listing.image.url }}" class="img-fluid" width="600" height="400">
             </div>
             <div class="col-md-6 d-flex flex-column">
-                <h3>Some Details:</h3>
+                <h3><strong>Some Details</strong>:</h3>
                 <p>Posted: {{ listing.list_date }} &nbsp; &nbsp; ({{ listing.list_date|timesince }} ago)</p>
                 {% if listing.category != 'Other' %}
                 <h5><strong>Type of property:</strong>&nbsp; &nbsp; {{ listing.category }}</h5>
@@ -25,9 +25,43 @@
                 <h5><strong>Number of bedrooms:</strong>&nbsp; &nbsp; {{ listing.bedrooms }}</h5>
                 <h5><strong>Number of bathrooms:</strong>&nbsp; &nbsp; {{ listing.bathrooms }}</h5>
                 <h5><strong>Location:</strong>&nbsp; &nbsp; {{ listing.listing_location }}</h5>
-<!--                TODO open street view map-->
+                <!--                TODO open street view map-->
 
-                <h5><strong>Owner:</strong>&nbsp;&nbsp;<a class="text-dark" href="{% url 'profile_details' listing.owner.pk %}">{{ listing.owner }}</a></h5>
+                <h5><strong>Owner:</strong>&nbsp;&nbsp;<a class="text-dark" href="{% url 'profile_details' listing.owner.pk %}">
+                    {{ listing.owner }}
+                    {% if user.is_authenticated and user == listing.owner %} (You) {% endif %}
+                </a></h5>
+                {% if user.is_authenticated and user == listing.owner %}
+                <button type="button" id="deleteButton" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal"
+                        data-url="{% url 'property_delete' listing.pk %}">Delete Listing
+                </button>
+<!--                TODO ADD edit button-->
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this listing?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form id="confirmDeleteForm" method="post"
+                                      action="{% url 'property_delete' listing.pk %}">
+                                    {% csrf_token %}
+                                    <button id="confirmDeleteButton" type="submit" class="btn btn-danger">Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
                 <div class="mt-auto">
                     <p>Back to <a class="text-dark" href="{% url 'property_list' %}">All Listings</a>.</p>
                 </div>
@@ -38,33 +72,11 @@
                 <h3><strong>Property description:</strong></h3>
                 <p>{{ listing.description }}</p>
             </div>
-            <h4>Want to buy? <a href="{% url 'contact_seller' listing.owner.pk %}" class="text-dark">Contact seller</a></h4>
-            <p>Back to <a href="{% url 'property_list' %}">All Listings</a>.</p>
-        </div>
-    </div>
-
-    {% if user.is_authenticated and user == listing.owner %}
-    <button type="button" id="deleteButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal"
-        data-url="{% url 'property_delete' listing.pk %}">Delete Listing</button>
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this listing?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form id="confirmDeleteForm" method="post" action="{% url 'property_delete' listing.pk %}">
-                        {% csrf_token %}
-                        <button id="confirmDeleteButton" type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
-            </div>
+            {% if user.is_authenticated and user != listing.owner %}
+            <h4>Want to buy? <a href="{% url 'contact_seller' listing.pk %}" class="text-dark">Contact seller</a></h4>
+            {% endif %}
+            <p class="mt-1 text-center">Back to <a class="text-dark" href="{% url 'property_list' %}">All Listings</a>.
+            </p>
         </div>
     </div>
     <script>
@@ -74,7 +86,7 @@
         confirmDeleteButton.addEventListener('submit', () => {
             confirmDeleteForm.submit();
         });
+
     </script>
-    {% endif %}
 </div>
 {% endblock content %}

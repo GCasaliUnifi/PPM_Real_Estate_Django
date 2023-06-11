@@ -1,6 +1,8 @@
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, TemplateView
 from django.utils import timezone
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 
 from .models import Category, Listing
 # Create your views here.
@@ -57,5 +59,12 @@ class PropertyDeleteView(DeleteView):
     success_url = reverse_lazy("home")
 
 
-class ContactSellerView(TemplateView):
+class ContactSellerView(LoginRequiredMixin, TemplateView):
     template_name = "contact_seller.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        listing_pk = self.kwargs.get('pk')
+        listing = get_object_or_404(Listing, pk=listing_pk)
+        context['listing_title'] = listing.title
+        return context
