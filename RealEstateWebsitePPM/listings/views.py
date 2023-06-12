@@ -40,7 +40,7 @@ class PropertyCreateView(CreateView):
         "listing_location",
         "bedrooms",
         "bathrooms",
-        "square_feet",
+        "square_metres",
         "category",
         "price",
         "image",

@@ -72,7 +72,7 @@
                 <h3><strong>Property description:</strong></h3>
                 <p>{{ listing.description }}</p>
             </div>
-            {% if user.is_authenticated and user != listing.owner %}
+            {% if user != listing.owner %}
             <h4>Want to buy? <a href="{% url 'contact_seller' listing.pk %}" class="text-dark">Contact seller</a></h4>
             {% endif %}
             <p class="mt-1 text-center">Back to <a class="text-dark" href="{% url 'property_list' %}">All Listings</a>.

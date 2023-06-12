@@ -1,11 +1,96 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+
 {% block title %}Sign Up{% endblock title%}
 
 {% block content %}
-<h2>Sign Up</h2>
-<form method="post">{% csrf_token %}
-  {{ form|crispy }}
-  <button class="btn btn-success" type="submit">Sign Up</button>
+<form method="post">
+    {% csrf_token %}
+    <div class="container mt-2 mb-5 bg-success bg-opacity-75 border border-2 border-dark rounded shadow">
+        <div class="row ms-auto me-auto">
+            <h1 class="text-center display-2"><strong>Sign Up</strong></h1>
+            <div class="row justify-content-center">
+                <div class="col-md-8 border-top border-2 border-dark">
+                    <small class="text-center">(*) required fields</small>
+                    <div class="form-group mt-2">
+                        <label for="username">Username *</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                               placeholder="Enter your Username" required>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label for="email">Email *</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email"
+                               required>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label for="password">Password *</label>
+                        <input type="password" class="form-control" id="password" name="password1"
+                               placeholder="Enter your password" required>
+                        <small class="form-text text-dark">{{ form.password1.help_text }}</small>
+                    </div>
+
+                    <div class="form-group mt-3 mb-2">
+                        <label for="confirm_password">Confirm Password *</label>
+                        <input type="password" class="form-control" id="confirm_password" name="password2"
+                               placeholder="Confirm your password" required>
+                        <small class="form-text text-dark">{{ form.password2.help_text }}</small>
+                    </div>
+
+                    <h5 class="mt-3 mb-2 border-top border-2 border-dark">Personal info (optional):</h5>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name"
+                                       placeholder="Enter your first name">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name"
+                                       placeholder="Enter your last name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phone_number">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone_number" name="phone_number"
+                                       placeholder="Enter your phone number">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="birth_date">Birth date</label>
+                                <input type="date" class="form-control" id="birth_date" name="date_of_birth"
+                                       placeholder="Date of Birth">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control mb-2" id="address" name="address"
+                               placeholder="Enter your address">
+                    </div>
+
+
+                    <div class="d-flex justify-content-center align-items-center pt-2">
+                        <button type="submit" class="btn btn-dark col-md-8">Sign Up</button>
+                    </div>
+                    <div class="text-center">
+                        <p class="ms-3 mt-2">Already have an account? <a class="text-dark" href="{% url 'login' %}">Log
+                            In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 {% endblock content %}
