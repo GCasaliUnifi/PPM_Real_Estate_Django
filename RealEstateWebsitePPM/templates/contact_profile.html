@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %} Contact Seller {% endblock title %}
+{% block title %} Contact User {% endblock title %}
 
 {% block content %}
 <div class="container mt-5 mb-2">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="bg-success bg-opacity-75 text-center p-4 border border-2 border-dark rounded shadow">
-                <h1 class="border-bottom border-2 border-dark">Contact Seller</h1>
+                <h1 class="border-bottom border-2 border-dark">Contact User {{ contacted_user }}</h1>
                 <p>The seller will answer your message at the email associated with your account.</p>
-                <form method="post" action="{% url 'contact_seller' listing_pk %}">
+                <form method="post" action="{% url 'contact_seller' contacted_user_pk %}">
                     {% csrf_token %}
                     <div class="form-group row justify-content-center mb-2">
                         <label for="email" class="col-md-2 col-form-label border-top border-1 border-dark">Your Email</label>
@@ -20,7 +20,7 @@
                     <div class="form-group row justify-content-center mb-2">
                         <label for="subject" class="col-md-2 col-form-label border-top border-1 border-dark">Subject</label>
                         <div class="col-md-8">
-                            <input type="text" style="background-color: #b3b6b8" class="form-control text-secondary" id="subject" placeholder="Enter the subject" value="I am interested in buying {{ listing_title }}" disabled>
+                            <input type="text" class="form-control text-dark" id="subject" placeholder="Enter the subject">
                         </div>
                     </div>
                     <div class="form-group row justify-content-center mb-2">

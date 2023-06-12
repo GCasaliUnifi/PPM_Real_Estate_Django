@@ -1,7 +1,9 @@
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, TemplateView
 from django.utils import timezone
 from django.urls import reverse_lazy
+from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
 from .models import Category, Listing
@@ -61,10 +63,22 @@ class PropertyDeleteView(DeleteView):
 
 class ContactSellerView(LoginRequiredMixin, TemplateView):
     template_name = "contact_seller.html"
+    success_url = reverse_lazy("success_page")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         listing_pk = self.kwargs.get('pk')
         listing = get_object_or_404(Listing, pk=listing_pk)
         context['listing_title'] = listing.title
+        context['listing_pk'] = listing_pk
         return context
+
+    def post(self, request, *args, **kwargs):
+        # Process the form submission and send the message to the seller
+        # Add any necessary logic here
+
+        # Show a success message
+        messages.success(request, "Your message has been sent successfully!")
+
+        # Redirect to a thank-you page or another appropriate page
+        return redirect('success_page')

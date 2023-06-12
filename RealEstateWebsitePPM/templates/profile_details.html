@@ -29,7 +29,7 @@
             </p>
             {% elif user.is_authenticated %}
             <p class="h5 pt-2 pb-2 border-top border-3 border-dark">
-                <a href="#" class="text-dark">
+                <a href="{% url 'contact_profile' customuser.pk %}" class="text-dark">
                     Send a message to {{ customuser.username }}
                 </a>
             </p>

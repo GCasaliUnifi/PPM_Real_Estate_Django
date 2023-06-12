@@ -1,7 +1,8 @@
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 
 # Create your views here.
 
@@ -49,3 +50,27 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
         messages.error(self.request, "Please correct the errors in the form.")
 
         return super().form_invalid(form)
+
+
+# Contact Profile View is different from the Contact Seller View because it is not associated with a listing
+class ContactProfileView(LoginRequiredMixin, TemplateView):
+    template_name = "contact_profile.html"
+    success_url = reverse_lazy("success_page")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_pk = self.kwargs.get('pk')
+        contacted_user = get_object_or_404(CustomUser, pk=user_pk)
+        context['contacted_user_pk'] = user_pk
+        context['contacted_user'] = contacted_user.username
+        return context
+
+    def post(self, request, *args, **kwargs):
+        # Process the form submission and send the message to the seller
+        # Add any necessary logic here
+
+        # Show a success message
+        messages.success(request, "Your message has been sent successfully!")
+
+        # Redirect to a thank-you page or another appropriate page
+        return redirect('home')
