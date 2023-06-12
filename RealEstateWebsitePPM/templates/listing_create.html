@@ -1,11 +1,96 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 
 {% block title %}Create new listing{% endblock title %}
 
 {% block content %}
-<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
-    {{ form|crispy }}
-    <button class="btn btn-success ml-2" type="submit">Save</button>
+<form method="post" enctype="multipart/form-data" action="{% url 'listing_create' %}">
+    {% csrf_token %}
+    <div class="container mt-2 mb-5 pb-4 bg-success bg-opacity-75 border border-3 border-dark rounded shadow">
+        <div class="row ms-auto me-auto">
+            <h1 class="text-center display-3"><strong>Sell your Property</strong></h1>
+            <div class="row justify-content-center">
+                <div class="col-md-8 border-top border-3 border-dark">
+                    <small class="text-center">(*) required fields</small>
+                    <div class="form-group mt-2">
+                        <label for="title"><strong>Title</strong> *</label>
+                        <input type="text" class="form-control" id="title" name="title"
+                               placeholder="Enter your title" required>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="description"><strong>Property description</strong> *</label>
+                        <textarea class="form-control" id="description" name="description" rows="5"
+                                  placeholder="Enter an exhaustive description for your property"></textarea>
+                    </div>
+                    <div class="row mt-3 pt-1 justify-content-center mt-2 border-top border-2 border-dark">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="bedrooms">Number of <strong>bedrooms</strong> *</label>
+                                <input type="number" class="form-control" id="bedrooms" name="bedrooms"
+                                       placeholder="1">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="bathrooms">Number of <strong>bathrooms</strong> *</label>
+                                <input type="number" class="form-control" id="bathrooms" name="bathrooms"
+                                       placeholder="1">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="square_metres"><strong>Square Metres</strong> *</label>
+                                <input type="number" class="form-control" id="square_metres" name="square_metres"
+                                       placeholder="50">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="address"><strong>Address</strong> *</label>
+                        <input type="text" class="form-control" id="address" name="listing_location"
+                               placeholder="eg. : 123 Main Street, New York, NY, 10001" required>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="price"><strong>Price</strong> *</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="text" class="form-control" id="price" name="price"
+                                   placeholder="Enter your price as USD" aria-label="Amount (to the nearest dollar)"
+                                   required>
+                            <span class="input-group-text">.00</span>
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <select id="categorySelect" class="form-select" name="category" required>
+                            <option value="" disabled selected>Select a category</option>
+                            {% for category in categories %}
+                            <option value="{{ category.pk }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="photo_main"><strong>Photo</strong> *</label>
+                        <input type="file" class="form-control" id="photo_main" name="image" required>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center mt-2">
+                    <button type="submit" class="btn btn-dark mt-2 col-md-12">List property</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
+{% if form.errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for field in form %}
+        {% for error in field.errors %}
+        <li>{{ field.label }}: {{ error }}</li>
+        {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
 {% endblock content %}

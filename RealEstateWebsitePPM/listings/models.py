@@ -3,6 +3,9 @@ from django.conf import settings
 from django.urls import reverse
 from django.dispatch import receiver
 from django.db.models.signals import pre_delete
+
+from .managers import CustomCategoryManager
+
 import uuid
 import os
 
@@ -12,6 +15,8 @@ import os
 class Category(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(unique=True)
+
+    custom_objects = CustomCategoryManager()
 
     class Meta:
         verbose_name_plural = "Categories"
