@@ -5,50 +5,74 @@
 {% block content %}
 
 <div class="sorting-section">
-  <div class="d-flex justify-content-between align-items-center">
-    <div>
-      <p>Sorted by: <strong>{{ request.GET.sort }}</strong></p>
-    </div>
-    <div class="d-flex align-items-center">
-      <h5 class="me-3">Sort by:</h5>
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="sortingDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Select an option
-        </button>
-        <div class="dropdown-menu" aria-labelledby="sortingDropdown">
-          <a class="dropdown-item" href="?sort=title">Title</a>
-          <a class="dropdown-item" href="?sort=price">Price</a>
-          <a class="dropdown-item" href="?sort=location">Location</a>
-          <!-- Add more sorting options as needed -->
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <p>Sorted by: <strong>{{ request.GET.sort }}</strong></p>
         </div>
-      </div>
+        <div class="d-flex align-items-center">
+            <h5 class="me-3">Sort by:</h5>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="sortingDropdown"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select an option
+                </button>
+                <div class="dropdown-menu" aria-labelledby="sortingDropdown">
+                    <a class="dropdown-item" href="?sort=price">Price</a>
+                    <a class="dropdown-item" href="?sort=location">Location</a>
+                    <a class="dropdown-item" href="?sort=bedrooms">Bedrooms</a>
+                    <a class="dropdown-item" href="?sort=bathrooms">Bathrooms</a>
+                    <a class="dropdown-item" href="?sort=squaremt">Square metres</a>
+                    <a class="dropdown-item" href="?bathrooms=2">Bathrooms 2</a>
+                    <!-- Add more sorting options as needed -->
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
+<button class="btn btn-dark mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filterSection"
+        aria-expanded="false" aria-controls="filterSection">
+    Show Filters
+</button>
+<div class="collapse" id="filterSection">
+    <div class="card card-body mb-2 bg-success bg-opacity-75">
+        <form action="{% url 'property_list' %}" method="get">
+            <!-- Your filter form fields go here -->
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="filter_price" class="form-label"><strong>Max Price</strong></label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="text" class="form-control" id="filter_price" name="max_price"
+                                   value="{{ request.GET.max_price }}">
+                            <span class="input-group-text">.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="filter_category" class="form-label"><strong>Category</strong></label>
+                    <select class="form-select" id="filter_category" name="category">
+                        <option value="">All</option>
+                        {% for category in categories %}
+                        <option value="{{ category.pk }}" {% if category.pk == request.GET.category|default_if_none:"0"|add:0 %}selected="selected"{% endif %}>
+                            {{ category.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-<!--{% for listing in listing_list %}-->
-<!--<div class="row border-top border-bottom border-success py-3 bg-dark mb-2">-->
-<!--    <div class="col-md-3">-->
-<!--        {% if listing.image %}-->
-<!--        <img src="{{ listing.image.url }}" class="img-fluid" alt="Listing Image">-->
-<!--        {% else %}-->
-<!--        <img src="https://placehold.co/600x400" class="img-fluid" alt="Listing Image">-->
-<!--        {% endif %}-->
-<!--    </div>-->
-<!--    <div class="col-md-9">-->
-<!--        <h2 class="font-weight-bold"><a href="{{ listing.get_absolute_url }}" class="text-decoration-none">{{ listing.title }}</a></h2>-->
-<!--        <h3 class="text-secondary">Price: {{ listing.price }}€</h3>-->
-<!--        <h3 class="text-secondary">Location: {{ listing.listing_location }}</h3>-->
-<!--        <p class="text-light">{{ listing.description|cut_after_chars:400 }}</p>-->
-<!--        <p class="h5 text-secondary">Seller: {{ listing.owner }}</p>-->
-<!--    </div>-->
-<!--</div>-->
-<!--{% endfor %}-->
 {% for listing in listing_list %}
-<div class="card mb-2 bg-success bg-opacity-75">
+<div class="card mb-2 bg-success bg-opacity-75 border border-1 border-dark shadow">
     <div class="row no-gutters">
-        <div class="col-md-4">
+        <div class="col-md-4" style="border-right: 2px solid black;">
             {% if listing.image %}
             <img src="{{ listing.image.url }}" class="card-img" alt="Listing Image">
             {% else %}
@@ -57,13 +81,25 @@
         </div>
         <div class="col-md-8">
             <div class="card-body text-dark">
-                <h2 class="card-title"><a href="{{ listing.get_absolute_url }}" class="text-dark"><strong>{{ listing.title }}</strong></a></h2>
-                <h3 class="card-text">Price: {{ listing.price }}€</h3>
-                <h3 class="card-text mb-2">Location: {{ listing.listing_location }}</h3>
+                <h2 class="card-title text-center border-bottom border-1 border-dark pb-2"><a
+                        href="{{ listing.get_absolute_url }}" class="text-dark"><strong>{{ listing.title }}</strong></a>
+                    &nbsp;({{ listing.category }})
+                </h2>
+                <h3 class="card-text"><strong>Price</strong>: {{ listing.price }}€</h3>
+                <h3 class="card-text mb-2"><strong>Location</strong>: {{ listing.listing_location }}</h3>
+                <p class="card-text"><strong>Square metres</strong>: {{ listing.square_metres }} m²,
+                    <strong>Bedrooms</strong>: {{ listing.bedrooms }}, <strong>Bathrooms</strong>:
+                    {{ listing.bathrooms }}</p>
                 <p class="card-text mt-4">{{ listing.description|cut_after_chars:400 }}</p>
-                <p class="card-text h5">Seller: {{ listing.owner }}</p>
+                <p class="card-text h5"><strong>Seller</strong>: {{ listing.owner }}</p>
             </div>
         </div>
+    </div>
+</div>
+{% empty %}
+<div class="card mb-2 bg-success bg-opacity-75 border border-1 border-dark shadow">
+    <div class="card-body text-dark">
+        <h2 class="card-title text-center border-bottom border-1 border-dark pb-2">No listings found that satisfy those filters...</h2>
     </div>
 </div>
 {% endfor %}

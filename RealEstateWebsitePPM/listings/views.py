@@ -1,3 +1,4 @@
+import urllib.parse
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, TemplateView
 from django.utils import timezone
 from django.urls import reverse_lazy
@@ -7,23 +8,42 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
 from .models import Category, Listing
-# Create your views here.
 
 
 class PropertyListView(ListView):
     model = Listing
     template_name = "property_list.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categories"] = Category.custom_objects.all()
+        return context
+
     def get_queryset(self):
         queryset = super().get_queryset()
+
+        # Filtering
+        max_price = self.request.GET.get('max_price')
+        if max_price:
+            queryset = queryset.filter(price__lte=max_price)
+
+        category = self.request.GET.get('category')
+        if category:
+            queryset = queryset.filter(category=category)
+
+        # Sorting
         sort_param = self.request.GET.get('sort')
-        if sort_param == 'title':
-            queryset = queryset.order_by('title')
-        elif sort_param == 'price':
-            queryset = queryset.order_by('price')
-        elif sort_param == 'listing_location':
-            queryset = queryset.order_by('listing_location')
-            # Add more sorting options as needed
+        sorting_options = {
+            'price': 'price',
+            'bedrooms': 'bedrooms',
+            'bathrooms': 'bathrooms',
+            'squaremt': 'square_metres',
+        }
+
+        if sort_param in sorting_options:
+            sort_field = sorting_options[sort_param]
+            queryset = queryset.order_by(sort_field)
+
         return queryset
 
 
