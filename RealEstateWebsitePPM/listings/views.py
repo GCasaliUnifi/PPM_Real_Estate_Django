@@ -14,9 +14,28 @@ class PropertyListView(ListView):
     model = Listing
     template_name = "property_list.html"
 
+    sort_mapping = {
+        "1": "Price (low to high)",
+        "2": "Price (high to low)",
+        "3": "Date Posted (newest first)",
+        "4": "Date Posted (oldest first)",
+        "5": "Square metres (low to high)",
+        "6": "Square metres (high to low)",
+    }
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        sort_param = self.request.GET.get('sort')
+        if sort_param:
+            sort_name = self.sort_mapping.get(sort_param, "")
+            if sort_name:
+                context["sort_name"] = sort_name
+            else:
+                context["sort_name"] = "None"
+        else:
+            context["sort_name"] = "None"
         context["categories"] = Category.custom_objects.all()
+
         return context
 
     def get_queryset(self):
@@ -54,16 +73,19 @@ class PropertyListView(ListView):
 
         # Sorting
         sort_param = self.request.GET.get('sort')
-        sorting_options = {
-            'price': 'price',
-            'bedrooms': 'bedrooms',
-            'bathrooms': 'bathrooms',
-            'squaremt': 'square_metres',
+        sort_map = {
+            "1": "price",
+            "2": "-price",
+            "3": "list_date",
+            "4": "-list_date",
+            "5": "square_metres",
+            "6": "-square_metres",
         }
 
-        if sort_param in sorting_options:
-            sort_field = sorting_options[sort_param]
-            queryset = queryset.order_by(sort_field)
+        if sort_param:
+            orderby_param = sort_map.get(sort_param, "")
+            if orderby_param:
+                queryset = queryset.order_by(orderby_param)
 
         return queryset
 

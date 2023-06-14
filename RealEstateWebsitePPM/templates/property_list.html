@@ -6,38 +6,32 @@
 
 <!--FIXME fix the sorting section so that it adds a new field to the query. Right now the options are just hrefs.-->
 <!--    Possible fix => insert the sort stuff inside the form and make it behave similarly to the category menu.-->
-<div class="sorting-section">
-    <div class="d-flex justify-content-between align-items-center">
-        <div>
-            <p>Sorted by: <strong>{{ request.GET.sort }}</strong></p>
+
+<!--TODO add reset filters button (may add a link to the default listing page)-->
+<form action="{% url 'property_list' %}" method="get">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-dark mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filterSection"
+                    aria-expanded="false" aria-controls="filterSection">
+                Show Filters
+            </button>
         </div>
-        <div class="d-flex align-items-center">
-            <h5 class="me-3">Sort by:</h5>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="sortingDropdown"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Select an option
-                </button>
-                <div class="dropdown-menu" aria-labelledby="sortingDropdown">
-                    <a class="dropdown-item" href="?sort=price">Price</a>
-                    <a class="dropdown-item" href="?sort=location">Location</a>
-                    <a class="dropdown-item" href="?sort=bedrooms">Bedrooms</a>
-                    <a class="dropdown-item" href="?sort=bathrooms">Bathrooms</a>
-                    <a class="dropdown-item" href="?sort=squaremt">Square metres</a>
-                </div>
-            </div>
+        <div class="col col-md-4">
+<!--            TODO change the arrow colour-->
+            <select class="form-select bg-dark text-light border-0"  id="filter_sort" name="sort" onchange="this.form.submit()">
+                <option value="" disabled selected>Sort by</option>
+                <option value="1">Price (low to high)</option>
+                <option value="2">Price (high to low)</option>
+                <option value="3">Date Posted (newest first)</option>
+                <option value="4">Date Posted (oldest first)</option>
+                <option value="5">Square metres (low to high)</option>
+                <option value="6">Square metres (high to low)</option>
+            </select>
         </div>
     </div>
-</div>
-
-<button class="btn btn-dark mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filterSection"
-        aria-expanded="false" aria-controls="filterSection">
-    Show Filters
-</button>
-<div class="collapse" id="filterSection">
-    <div class="card card-body mb-2 bg-success bg-opacity-75 border border-1 border-dark">
-        <form action="{% url 'property_list' %}" method="get">
-<!--            Prima riga-->
+    <div class="collapse" id="filterSection">
+        <div class="card card-body mb-3 bg-success bg-opacity-75 border border-1 border-dark">
+            <!--            Prima riga-->
             <div class="row">
                 <div class="col-md-4">
                     <div class="mb-3">
@@ -56,26 +50,27 @@
                         <option value="">All</option>
                         {% for category in categories %}
                         <option value="{{ category.pk }}" {% if category.pk == request.GET.category|default_if_none:"0"|add:0 %}selected="selected"{% endif %}>
-                            {{ category.name }}
+                        {{ category.name }}
                         </option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
+<!--                        TODO fix this to handle the location correctly-->
                         <label for="filter_location" class="form-label"><strong>Location</strong></label>
                         <input type="text" class="form-control" id="filter_location" name="location"
-                                value="{{ request.GET.location }}">
+                               value="{{ request.GET.location }}">
                     </div>
                 </div>
             </div>
-<!--            Seconda riga-->
+            <!--            Seconda riga-->
             <div class="row">
                 <div class="col-md-3">
                     <div class="mb-3">
                         <label for="filter_list_date" class="form-label"><strong>List Date</strong></label>
                         <input type="date" class="form-control" id="filter_list_date" name="date_posted"
-                                value="{{ request.GET.date_posted }}">
+                               value="{{ request.GET.date_posted }}">
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -92,24 +87,28 @@
                     <div class="mb-3">
                         <label for="filter_bedrooms" class="form-label"><strong>Min Bedrooms</strong></label>
                         <input type="number" class="form-control" id="filter_bedrooms" name="n_bdrm"
-                                value="{{ request.GET.n_bdrm }}">
+                               value="{{ request.GET.n_bdrm }}">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="mb-3">
                         <label for="filter_bathrooms" class="form-label"><strong>Min Bathrooms</strong></label>
                         <input type="number" class="form-control" id="filter_bathrooms" name="n_bthrm"
-                                value="{{ request.GET.n_bthrm }}">
+                               value="{{ request.GET.n_bthrm }}">
                     </div>
                 </div>
             </div>
-            <div class="d-grid gap-2">
-                <button class="btn btn-dark" type="submit">Update</button>
+            <div class="row mt-1 justify-content-center">
+                <button class="btn btn-dark col-md-6" type="submit">Update</button>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</form>
 
+
+<div class="row text-end">
+    <h5><strong>Sorted by</strong>: {{ sort_name }}</h5>
+</div>
 {% for listing in listing_list %}
 <div class="card mb-2 bg-success bg-opacity-75 border border-1 border-dark shadow">
     <div class="row no-gutters">
@@ -141,7 +140,8 @@
 {% empty %}
 <div class="card mb-2 bg-success bg-opacity-75 border border-1 border-dark shadow">
     <div class="card-body text-dark">
-        <h2 class="card-title text-center border-bottom border-1 border-dark pb-2">No listings found that satisfy those filters...</h2>
+        <h2 class="card-title text-center border-bottom border-1 border-dark pb-2">No listings found that satisfy those
+            filters...</h2>
     </div>
 </div>
 {% endfor %}
