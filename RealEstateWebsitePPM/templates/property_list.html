@@ -4,6 +4,8 @@
 {% block title %}Listings{% endblock title %}
 {% block content %}
 
+<!--FIXME fix the sorting section so that it adds a new field to the query. Right now the options are just hrefs.-->
+<!--    Possible fix => insert the sort stuff inside the form and make it behave similarly to the category menu.-->
 <div class="sorting-section">
     <div class="d-flex justify-content-between align-items-center">
         <div>
@@ -22,8 +24,6 @@
                     <a class="dropdown-item" href="?sort=bedrooms">Bedrooms</a>
                     <a class="dropdown-item" href="?sort=bathrooms">Bathrooms</a>
                     <a class="dropdown-item" href="?sort=squaremt">Square metres</a>
-                    <a class="dropdown-item" href="?bathrooms=2">Bathrooms 2</a>
-                    <!-- Add more sorting options as needed -->
                 </div>
             </div>
         </div>
@@ -35,22 +35,22 @@
     Show Filters
 </button>
 <div class="collapse" id="filterSection">
-    <div class="card card-body mb-2 bg-success bg-opacity-75">
+    <div class="card card-body mb-2 bg-success bg-opacity-75 border border-1 border-dark">
         <form action="{% url 'property_list' %}" method="get">
-            <!-- Your filter form fields go here -->
+<!--            Prima riga-->
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="filter_price" class="form-label"><strong>Max Price</strong></label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
-                            <input type="text" class="form-control" id="filter_price" name="max_price"
+                            <input type="number" class="form-control" id="filter_price" name="max_price"
                                    value="{{ request.GET.max_price }}">
                             <span class="input-group-text">.00</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label for="filter_category" class="form-label"><strong>Category</strong></label>
                     <select class="form-select" id="filter_category" name="category">
                         <option value="">All</option>
@@ -61,9 +61,50 @@
                         {% endfor %}
                     </select>
                 </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="filter_location" class="form-label"><strong>Location</strong></label>
+                        <input type="text" class="form-control" id="filter_location" name="location"
+                                value="{{ request.GET.location }}">
+                    </div>
+                </div>
+            </div>
+<!--            Seconda riga-->
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="filter_list_date" class="form-label"><strong>List Date</strong></label>
+                        <input type="date" class="form-control" id="filter_list_date" name="date_posted"
+                                value="{{ request.GET.date_posted }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="filter_square_metres" class="form-label"><strong>Min Square Metres</strong></label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" id="filter_square_metres" name="min_sqm"
+                                   value="{{ request.GET.min_sqm }}">
+                            <span class="input-group-text"> m²</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="filter_bedrooms" class="form-label"><strong>Min Bedrooms</strong></label>
+                        <input type="number" class="form-control" id="filter_bedrooms" name="n_bdrm"
+                                value="{{ request.GET.n_bdrm }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="filter_bathrooms" class="form-label"><strong>Min Bathrooms</strong></label>
+                        <input type="number" class="form-control" id="filter_bathrooms" name="n_bthrm"
+                                value="{{ request.GET.n_bthrm }}">
+                    </div>
+                </div>
             </div>
             <div class="d-grid gap-2">
-                <button class="btn btn-primary" type="submit">Update</button>
+                <button class="btn btn-dark" type="submit">Update</button>
             </div>
         </form>
     </div>
@@ -92,6 +133,7 @@
                     {{ listing.bathrooms }}</p>
                 <p class="card-text mt-4">{{ listing.description|cut_after_chars:400 }}</p>
                 <p class="card-text h5"><strong>Seller</strong>: {{ listing.owner }}</p>
+                <p class="card-text mt-1"><small>listed: {{ listing.list_date|timesince }} ago</small></p>
             </div>
         </div>
     </div>

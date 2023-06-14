@@ -31,6 +31,27 @@ class PropertyListView(ListView):
         if category:
             queryset = queryset.filter(category=category)
 
+        l_location = self.request.GET.get('location')
+        if l_location:
+            # TODO: Add function to handle location filtering and also split the location into city and address
+            pass
+
+        date_posted = self.request.GET.get('date_posted')
+        if date_posted:
+            queryset = queryset.filter(list_date=date_posted)
+
+        min_square_metres = self.request.GET.get('min_sqm')
+        if min_square_metres:
+            queryset = queryset.filter(square_metres__gte=min_square_metres)
+
+        min_bedrooms = self.request.GET.get('min_bedrooms')
+        if min_bedrooms:
+            queryset = queryset.filter(bedrooms__gte=min_bedrooms)
+
+        min_bathrooms = self.request.GET.get('min_bathrooms')
+        if min_bathrooms:
+            queryset = queryset.filter(bathrooms__gte=min_bathrooms)
+
         # Sorting
         sort_param = self.request.GET.get('sort')
         sorting_options = {
