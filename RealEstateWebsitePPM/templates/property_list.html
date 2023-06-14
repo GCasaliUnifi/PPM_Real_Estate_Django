@@ -3,15 +3,11 @@
 
 {% block title %}Listings{% endblock title %}
 {% block content %}
-
-<!--FIXME fix the sorting section so that it adds a new field to the query. Right now the options are just hrefs.-->
-<!--    Possible fix => insert the sort stuff inside the form and make it behave similarly to the category menu.-->
-
 <!--TODO add reset filters button (may add a link to the default listing page)-->
 <form action="{% url 'property_list' %}" method="get">
     <div class="row">
         <div class="col">
-            <button class="btn btn-dark mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filterSection"
+            <button class="btn btn-dark mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterSection"
                     aria-expanded="false" aria-controls="filterSection">
                 Show Filters
             </button>

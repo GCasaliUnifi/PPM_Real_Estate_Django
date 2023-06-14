@@ -11,16 +11,33 @@
                     <h1 class="display-3 card-title text-center border-bottom border-dark border-4 pb-2"><strong>Log In</strong></h1>
                     <form method="post" action="{% url 'login' %}">
                         {% csrf_token %}
-                        <div class="form-floating mb-3">
+                        <div class="form-floating mb-3 {%if form.username.errors %}has-error{% endif %}">
                             <input type="text" class="form-control" id="id_username" name="username"
                                    placeholder="Username" aria-label="Username" aria-describedby="floatingInput">
-                            <label for="id_username">Username</label>
+                            <label for="id_username">
+                                Username
+                                {% if form.username.errors %}
+                                <span class="text-danger"><strong>({{ form.username.errors|join:", " }})</strong></span>
+                                {% endif %}
+                            </label>
                         </div>
-                        <div class="form-floating mb-3">
+                        <div class="form-floating mb-3 {% if form.password.errors %}has-error{% endif %}">
                             <input type="password" class="form-control" id="id_password" name="password"
                                    placeholder="Password" aria-label="Password" aria-describedby="floatingInput">
-                            <label for="id_password">Password</label>
+                            <label for="id_password">
+                                Password
+                                {% if form.password.errors %}
+                                <span class="text-danger"><strong>({{ form.password.errors|join:", " }})</strong></span>
+                                {% endif %}
+                            </label>
                         </div>
+                        {% if form.non_field_errors %}
+                        <div class="help-block mt-1 ps-2 bg-warning rounded">
+                            {% for error in form.non_field_errors %}
+                            <p class="text-dark"><strong>{{ error }}</strong></p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-dark col-md-8">Login</button>
                             <p><a class="text-dark mt-1" href="{% url 'password_reset' %}">Forgot password?</a></p>
