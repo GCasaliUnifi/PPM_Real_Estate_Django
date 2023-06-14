@@ -4,6 +4,10 @@
 {% block title %}Listings{% endblock title %}
 {% block content %}
 <!--TODO add reset filters button (may add a link to the default listing page)-->
+<!--TODO add filter badges to show selected filters-->
+<!--TODO add pagination-->
+<!--TODO change featured cards to resemble those in the bootstrap example-->
+<!--FIXME filtering by date does not work, may be error in the queryset filter in the view-->
 <form action="{% url 'property_list' %}" method="get">
     <div class="row">
         <div class="col">
