@@ -76,8 +76,8 @@ class PropertyListView(ListView):
         sort_map = {
             "1": "price",
             "2": "-price",
-            "3": "list_date",
-            "4": "-list_date",
+            "3": "-list_date",
+            "4": "list_date",
             "5": "square_metres",
             "6": "-square_metres",
         }
