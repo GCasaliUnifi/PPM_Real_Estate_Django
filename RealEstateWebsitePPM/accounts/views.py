@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 
@@ -15,6 +16,17 @@ class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
+
+
+class CustomLoginView(LoginView):
+    template_name = "registration/login.html"
+
+    def get_success_url(self):
+        redirect_to = self.request.POST.get('next')
+        if redirect_to:
+            return redirect_to
+        else:
+            return reverse_lazy('property_list')
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
