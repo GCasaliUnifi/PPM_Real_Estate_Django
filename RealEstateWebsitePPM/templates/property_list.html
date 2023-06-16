@@ -3,10 +3,8 @@
 
 {% block title %}Listings{% endblock title %}
 {% block content %}
-<!--TODO add pagination-->
 <!--FIXME sorting or changing filters when inside the "my listings page" results in a redirect to the general /listing/-->
 <!--    may solve this by not making it possible for a user to click filter buttons if inside his page-->
-<!--FIXME filtering by date does not work, may be error in the queryset filter in the view-->
 <form action="{% url 'property_list' %}" method="get" >
     <div class="row">
         <div class="col">
@@ -55,7 +53,6 @@
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
-<!--                        TODO fix this to handle the location correctly-->
                         <label for="filter_location" class="form-label"><strong>Location</strong></label>
                         <input type="text" class="form-control" id="filter_location" name="location"
                                value="{{ request.GET.location }}">
@@ -64,13 +61,6 @@
             </div>
             <!--            Seconda riga-->
             <div class="row">
-                <div class="col-md-3">
-                    <div class="mb-3">
-                        <label for="filter_list_date" class="form-label"><strong>List Date</strong></label>
-                        <input type="date" class="form-control" id="filter_list_date" name="date_posted"
-                               value="{{ request.GET.date_posted }}">
-                    </div>
-                </div>
                 <div class="col-md-3">
                     <div class="mb-3">
                         <label for="filter_square_metres" class="form-label"><strong>Min Square Metres</strong></label>
@@ -93,6 +83,16 @@
                         <label for="filter_bathrooms" class="form-label"><strong>Min Bathrooms</strong></label>
                         <input type="number" class="form-control" id="filter_bathrooms" name="n_bthrm"
                                value="{{ request.GET.n_bthrm }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="filter_n_list" class="form-label"><strong>How many to show (at max)</strong></label>
+                        <select class="form-select" id="filter_n_list" name="n_listings">
+                            <option value="0">All</option>
+                            <option value="10" selected>10 (Default)</option>
+                            <option value="50">50</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -139,10 +139,11 @@
     </div>
 
 {% empty %}
-<div class="card mb-2 bg-success bg-opacity-75 border border-1 border-dark shadow">
-    <div class="card-body text-dark">
-        <h2 class="card-title text-center border-bottom border-1 border-dark pb-2">No listings found that satisfy those
-            filters...</h2>
+<div class="row justify-content-center">
+    <div class="card col-md-9 mb-2 bg-success bg-opacity-75 border border-1 border-dark shadow">
+        <div class="card-body text-dark">
+            <h2 class="card-title text-center border-bottom border-1 border-dark pb-2">No listings found ...</h2>
+        </div>
     </div>
 </div>
 {% endfor %}

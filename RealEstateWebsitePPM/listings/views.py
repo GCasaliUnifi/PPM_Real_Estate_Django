@@ -52,8 +52,7 @@ class PropertyListView(ListView):
 
         l_location = self.request.GET.get('location')
         if l_location:
-            # TODO: Add function to handle location filtering and also split the location into city and address
-            pass
+            queryset = queryset.filter(listing_location__icontains=l_location)
 
         date_posted = self.request.GET.get('date_posted')
         if date_posted:
@@ -70,6 +69,14 @@ class PropertyListView(ListView):
         min_bathrooms = self.request.GET.get('min_bathrooms')
         if min_bathrooms:
             queryset = queryset.filter(bathrooms__gte=min_bathrooms)
+
+        n_listings = self.request.GET.get('n_listings')
+        if n_listings:
+            if int(n_listings) == 0:
+                pass
+            else:
+                if len(queryset) >= int(n_listings):
+                    queryset = queryset.all()[int(n_listings)]
 
         # Sorting
         sort_param = self.request.GET.get('sort')
@@ -136,8 +143,7 @@ class PropertyCreateView(CreateView):
 
 class PropertyDeleteView(DeleteView):
     model = Listing
-    # TODO change this to redirect to the user's listings
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("my_properties")
 
 
 class ContactSellerView(LoginRequiredMixin, TemplateView):

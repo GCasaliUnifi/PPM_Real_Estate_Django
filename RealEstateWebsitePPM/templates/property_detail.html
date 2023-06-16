@@ -25,8 +25,6 @@
                 <h5><strong>Number of bedrooms:</strong>&nbsp; &nbsp; {{ listing.bedrooms }}</h5>
                 <h5><strong>Number of bathrooms:</strong>&nbsp; &nbsp; {{ listing.bathrooms }}</h5>
                 <h5><strong>Location:</strong>&nbsp; &nbsp; {{ listing.listing_location }}</h5>
-                <!--                TODO open street view map-->
-
                 <h5><strong>Owner:</strong>&nbsp;&nbsp;<a class="text-dark" href="{% url 'profile_details' listing.owner.pk %}">
                     {{ listing.owner }}
                     {% if user.is_authenticated and user == listing.owner %} (You) {% endif %}
@@ -36,7 +34,6 @@
                         data-bs-target="#deleteModal"
                         data-url="{% url 'property_delete' listing.pk %}">Delete Listing
                 </button>
-<!--                TODO ADD edit button-->
                 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
                      aria-hidden="true">
                     <div class="modal-dialog" role="document">

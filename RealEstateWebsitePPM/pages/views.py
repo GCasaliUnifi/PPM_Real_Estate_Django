@@ -7,7 +7,6 @@ from accounts.models import CustomUser
 class HomePageView(TemplateView):
     template_name = "home.html"
 
-    # TODO limit the number of featured listings to 6
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["featured_listings"] = Listing.objects.filter(is_featured=True)

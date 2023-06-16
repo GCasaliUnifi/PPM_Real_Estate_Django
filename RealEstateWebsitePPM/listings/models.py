@@ -41,7 +41,6 @@ class Listing(models.Model):
     bedrooms = models.PositiveIntegerField()
     bathrooms = models.PositiveIntegerField()
     square_metres = models.PositiveIntegerField()
-    # TODO add location field
     listing_location = models.CharField(max_length=200)
     image = models.ImageField(upload_to=listing_image_directory_path, blank=True, null=True)
     is_published = models.BooleanField()
