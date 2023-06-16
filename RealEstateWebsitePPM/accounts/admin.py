@@ -19,11 +19,11 @@ class CustomUserAdmin(UserAdmin):
         "is_staff",
     ]
     fieldsets = UserAdmin.fieldsets + (
-        ("Other info", {"fields": ("phone_number", "date_of_birth", "address")}),
+        ("Other info", {"fields": ("phone_number", "date_of_birth", "address", "profile_picture")}),
     )
 
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ("Other info", {"fields": ("phone_number", "date_of_birth", "address")}),
+        ("Other info", {"fields": ("phone_number", "date_of_birth", "address", "profile_picture")}),
     )
 
 

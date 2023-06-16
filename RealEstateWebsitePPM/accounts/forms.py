@@ -13,6 +13,7 @@ class CustomUserCreationForm(UserCreationForm):
             "phone_number",
             "address",
             "date_of_birth",
+            "profile_picture",
         )
 
 
@@ -27,4 +28,5 @@ class CustomUserChangeForm(UserChangeForm):
             "phone_number",
             "address",
             "date_of_birth",
+            "profile_picture",
         )

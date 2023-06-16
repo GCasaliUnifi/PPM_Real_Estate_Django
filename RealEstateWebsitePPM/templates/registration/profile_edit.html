@@ -2,19 +2,29 @@
 {% block title %}Edit Profile{% endblock %}
 {% block content %}
 
-<!--TODO Photo change for the user-->
 <div class="container mt-3 mb-5">
     <div class="row ms-auto me-auto">
         <h1 class="display-3 mb-3 pb-1 border-bottom border-2 border-dark text-center"><strong>Edit Your
             Profile</strong></h1>
     </div>
-    <form method="post" action="{% url 'profile_edit' user.pk %}">
+    <form method="post" enctype="multipart/form-data" action="{% url 'profile_edit' user.pk %}">
         {% csrf_token %}
         <div class="row justify-content-center bg-success bg-success bg-opacity-75 border border-2 border-dark pt-2 mb-3">
             <div class="col-md-5 text-center pt-4 me-5">
+                {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}"
+                     class="img-fluid rounded-circle mb-1 border border-3 border-dark"
+                     style="width: 200px; height: 200px;">
+                {% else %}
                 <img src="https://placehold.co/200x200"
                      class="img-fluid rounded-circle mb-1 border border-3 border-dark"
                      width="200" height="200">
+                {% endif %}
+                <div class="mb-3">
+                    <label for="newProfilePicture" class="form-label"><strong>Profile Picture</strong></label>
+                    <input type="file" class="form-control" id="newProfilePicture" name="profile_picture"
+                           aria-label="NewProfilePicture" aria-describedby="new-profile-picture">
+                </div>
             </div>
 
 

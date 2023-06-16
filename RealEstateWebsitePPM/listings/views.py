@@ -153,11 +153,5 @@ class ContactSellerView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        # Process the form submission and send the message to the seller
-        # Add any necessary logic here
-
-        # Show a success message
         messages.success(request, "Your message has been sent successfully!")
-
-        # Redirect to a thank-you page or another appropriate page
         return redirect('success_page')

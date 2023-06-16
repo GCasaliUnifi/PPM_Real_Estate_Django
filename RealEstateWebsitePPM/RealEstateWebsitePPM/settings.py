@@ -138,6 +138,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MEDIA_URL = "/media/"
 # the solution below is preferred because
-# he os.path.join() function takes care of joining the path components using
+# the os.path.join() function takes care of joining the path components using
 # the appropriate path separator for your operating system
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

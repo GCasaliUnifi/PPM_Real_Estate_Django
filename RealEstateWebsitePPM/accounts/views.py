@@ -5,8 +5,10 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 
-# Create your views here.
+import os
 
+# Create your views here.
+from django.conf import settings
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
 from listings.models import Listing
@@ -26,7 +28,7 @@ class CustomLoginView(LoginView):
         if redirect_to:
             return redirect_to
         else:
-            return reverse_lazy('property_list')
+            return reverse_lazy('home')
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
@@ -50,6 +52,17 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
         return reverse_lazy("profile_details", kwargs={"pk": self.object.pk})
 
     def form_valid(self, form):
+        # Retrieve old user profile_picture
+        print("Retrieve old pfp")
+        old_profile_picture = self.object.profile_picture
+        if old_profile_picture:
+            print("old_pfp exists: " + old_profile_picture.path + "  --- nome: " + old_profile_picture.name)
+
+        # Controlla se una nuova immagine è stata caricata
+        if 'profile_picture' in form.changed_data:
+            new_profile_picture = form.cleaned_data['profile_picture']
+            self.object.profile_picture = new_profile_picture
+
         # Add debugging statements
         print("Form is valid. Saving user profile.")
 

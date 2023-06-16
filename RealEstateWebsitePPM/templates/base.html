@@ -50,6 +50,9 @@
                     <li><a class="dropdown-item" href="{% url 'profile_details' user.pk %}">Your Profile</a></li>
                     <li><a class="dropdown-item" href="{% url 'my_properties' %}">See your Listings</a></li>
 <!--                    <li><a class="dropdown-item" href="">Change password</a></li>-->
+                    {% if user.is_superuser %}
+                    <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin page</a></li>
+                    {% endif %}
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Log Out</a></li>
                 </ul>
             </div>
