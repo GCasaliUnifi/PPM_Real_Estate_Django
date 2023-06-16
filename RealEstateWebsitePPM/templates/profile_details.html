@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% load custom_filters %}
+
+{% block title %}User Details{% endblock %}
 
 {% block content %}
 <section class="container text-center bg-success bg-opacity-75 border border-2 border-dark">
@@ -37,35 +40,39 @@
         </div>
     </div>
 </section>
-<!--TODO add a "View details" button and finish this with images from properties-->
 <div class="container mt-2 pt-1 mb-4 pb-2 col-md-8">
-    <h2 class="h2 text-center mt-5 mb-3 pb-1 border-bottom border-2 border-dark"><strong>Some of this user's listings</strong></h2>
+    <h2 class="h2 text-center mt-5 mb-3 pb-1 border-bottom border-2 border-dark"><strong>Some of this user's
+        listings</strong></h2>
     <div id="carouselExampleIndicators" class="carousel slide">
         <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
+            {% for listing in user_listings %}
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter0 }}"
+                    class="{% if forloop.first %}active {% endif %} bg-secondary" aria-label="Slide {{ forloop.counter }}"></button>
+            {% endfor %}
         </div>
+
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://placehold.co/600x350/5e5c64/ffffff" class="d-block w-100" alt="Immagine1">
+            {% for listing in user_listings %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="card pb-3">
+                    <img src="{{ listing.image.url }}" class="card-img-top" alt="Listing Image"
+                         style="max-height: 400px; max-width: 100%;">
+                    <div class="card-body">
+                        <h5 class="card-title"><a class="text-dark" href="{% url 'property_detail' listing.pk %}">
+                            {{ listing.title }}</a></h5>
+                        <p class="card-text">{{ listing.description|cut_after_chars:50 }}</p>
+                    </div>
+                </div>
             </div>
-            <div class="carousel-item">
-                <img src="https://placehold.co/600x350/5e5c64/ffffff" class="d-block w-100" alt="Immageine2">
-            </div>
-            <div class="carousel-item">
-                <img src="https://placehold.co/600x350/5e5c64/ffffff" class="d-block w-100" alt="Immageine3">
-            </div>
+            {% endfor %}
+
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+        <button class="carousel-control-prev btn btn-dark" type="button" data-bs-target="#carouselExampleIndicators"
                 data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+        <button class="carousel-control-next btn btn-dark" type="button" data-bs-target="#carouselExampleIndicators"
                 data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>

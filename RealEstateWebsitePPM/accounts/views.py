@@ -9,9 +9,9 @@ from django.shortcuts import get_object_or_404, redirect
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
+from listings.models import Listing
 
 
-# TODO ricorda di aggiungere il LoginRequiredMixin a tutte le classi
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
@@ -32,6 +32,13 @@ class CustomLoginView(LoginView):
 class ProfileView(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = "profile_details.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_pk = self.kwargs.get('pk')
+        user_listings = Listing.objects.filter(owner=user_pk)[:3]
+        context['user_listings'] = user_listings
+        return context
 
 
 class EditProfileView(LoginRequiredMixin, UpdateView):

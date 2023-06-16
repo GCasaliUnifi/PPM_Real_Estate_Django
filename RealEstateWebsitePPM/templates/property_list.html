@@ -3,13 +3,11 @@
 
 {% block title %}Listings{% endblock title %}
 {% block content %}
-<!--TODO add reset filters button (may add a link to the default listing page)-->
-<!--TODO add filter badges to show selected filters-->
 <!--TODO add pagination-->
 <!--FIXME sorting or changing filters when inside the "my listings page" results in a redirect to the general /listing/-->
 <!--    may solve this by not making it possible for a user to click filter buttons if inside his page-->
 <!--FIXME filtering by date does not work, may be error in the queryset filter in the view-->
-<form action="{% url 'property_list' %}" method="get">
+<form action="{% url 'property_list' %}" method="get" >
     <div class="row">
         <div class="col">
             <button class="btn btn-dark mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterSection"
@@ -18,7 +16,6 @@
             </button>
         </div>
         <div class="col col-md-4">
-<!--            TODO change the arrow colour-->
             <select class="form-select bg-dark text-light border-0"  id="filter_sort" name="sort" onchange="this.form.submit()">
                 <option value="" disabled selected>Sort by</option>
                 <option value="1">Price (low to high)</option>
@@ -100,7 +97,8 @@
                 </div>
             </div>
             <div class="row mt-1 justify-content-center">
-                <button class="btn btn-dark col-md-6" type="submit">Update</button>
+                <button class="btn btn-dark col-md-4" type="submit">Update</button>
+                <button class="btn btn-dark ms-2 col-md-4" type="button" onclick="resetFilters()">Reset Filters</button>
             </div>
         </div>
     </div>
@@ -110,34 +108,36 @@
 <div class="row text-end">
     <h5><strong>Sorted by</strong>: {{ sort_name }}</h5>
 </div>
+<div class="row justify-content-center">
 {% for listing in listing_list %}
-<div class="card mb-2 bg-success bg-opacity-75 border border-1 border-dark shadow">
-    <div class="row no-gutters">
-        <div class="col-md-4" style="border-right: 2px solid black;">
-            {% if listing.image %}
-            <img src="{{ listing.image.url }}" class="card-img" alt="Listing Image">
-            {% else %}
-            <img src="https://placehold.co/600x400" class="card-img" alt="Listing Image">
-            {% endif %}
-        </div>
-        <div class="col-md-8">
-            <div class="card-body text-dark">
-                <h2 class="card-title text-center border-bottom border-1 border-dark pb-2"><a
-                        href="{{ listing.get_absolute_url }}" class="text-dark"><strong>{{ listing.title }}</strong></a>
-                    &nbsp;({{ listing.category }})
-                </h2>
-                <h3 class="card-text"><strong>Price</strong>: {{ listing.price }}€</h3>
-                <h3 class="card-text mb-2"><strong>Location</strong>: {{ listing.listing_location }}</h3>
-                <p class="card-text"><strong>Square metres</strong>: {{ listing.square_metres }} m²,
-                    <strong>Bedrooms</strong>: {{ listing.bedrooms }}, <strong>Bathrooms</strong>:
-                    {{ listing.bathrooms }}</p>
-                <p class="card-text mt-4">{{ listing.description|cut_after_chars:400 }}</p>
-                <p class="card-text h5"><strong>Seller</strong>: {{ listing.owner }}</p>
-                <p class="card-text mt-1"><small>listed: {{ listing.list_date|timesince }} ago</small></p>
+    <div class="card mb-2 bg-success bg-opacity-75 border border-1 border-dark shadow col-md-10">
+        <div class="row no-gutters">
+            <div class="col-md-4 py-2" style="border-right: 2px solid black;">
+                {% if listing.image %}
+                <img src="{{ listing.image.url }}" class="card-img" alt="Listing Image">
+                {% else %}
+                <img src="https://placehold.co/600x400" class="card-img" alt="Listing Image">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <div class="card-body text-dark">
+                    <h2 class="card-title text-center border-bottom border-1 border-dark pb-2"><a
+                            href="{{ listing.get_absolute_url }}" class="text-dark"><strong>{{ listing.title }}</strong></a>
+                        &nbsp;({{ listing.category }})
+                    </h2>
+                    <h3 class="card-text"><strong>Price</strong>: {{ listing.price }}€</h3>
+                    <h3 class="card-text mb-2"><strong>Location</strong>: {{ listing.listing_location }}</h3>
+                    <p class="card-text"><strong>Square metres</strong>: {{ listing.square_metres }} m²,
+                        <strong>Bedrooms</strong>: {{ listing.bedrooms }}, <strong>Bathrooms</strong>:
+                        {{ listing.bathrooms }}</p>
+                    <p class="card-text mt-4">{{ listing.description|cut_after_chars:200 }}</p>
+                    <p class="card-text h5"><strong>Seller</strong>: {{ listing.owner }}</p>
+                    <p class="card-text mt-1"><small>listed: {{ listing.list_date|timesince }} ago</small></p>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
 {% empty %}
 <div class="card mb-2 bg-success bg-opacity-75 border border-1 border-dark shadow">
     <div class="card-body text-dark">
@@ -146,4 +146,13 @@
     </div>
 </div>
 {% endfor %}
+</div>
+
+<script>
+    function resetFilters() {
+        var url = window.location.href.split('?')[0];  // Ottieni l'URL senza la query string
+        window.location.href = url;  // Esegui una nuova richiesta GET senza la query string
+    }
+</script>
+
 {% endblock content %}
