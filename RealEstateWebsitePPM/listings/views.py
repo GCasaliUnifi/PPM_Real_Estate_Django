@@ -90,6 +90,17 @@ class PropertyListView(ListView):
         return queryset
 
 
+class MyPropertyListView(LoginRequiredMixin, ListView):
+    model = Listing
+    template_name = "property_list.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user = self.request.user
+        queryset = queryset.filter(owner=user)
+        return queryset
+
+
 class PropertyDetailView(DetailView):
     model = Listing
     template_name = "property_detail.html"
