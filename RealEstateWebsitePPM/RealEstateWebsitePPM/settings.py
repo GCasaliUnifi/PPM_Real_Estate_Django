@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-n)+fw2u@6ygby7
 # DEBUG = True
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 ALLOWED_HOSTS = ["ppmrealestatedjango-production.up.railway.app", "127.0.0.1", "localhost"]
-CSFR_TRUSTED_ORIGINS = ["ppmrealestatedjango-production.up.railway.app"]
+CSFR_TRUSTED_ORIGINS = ["https://ppmrealestatedjango-production.up.railway.app"]
 # Application definition
 
 INSTALLED_APPS = [
